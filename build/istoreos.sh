@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir -p _output
 
-CURL_INFO="`curl "https://fwindex.koolcenter.com/api/fw/device" --data-raw '{"deviceName":"x86_64_efi","firmwareName":"iStoreOS"}' `"
+CURL_INFO="` curl "https://fwindex.koolcenter.com/api/fw/device" --data-raw '{"deviceName":"x86_64_efi","firmwareName":"iStoreOS"}' `"
 echo curl Result: $CURL_INFO
 INFO=`echo $CURL_INFO | jq -r ".result.releases[0]"`
 export VERSION="`echo $INFO | jq .release`"
@@ -43,6 +43,7 @@ cat "supportFiles/_template/grub.cfg" | envsubst '${GRUB_TITLE}' | tee "supportF
 cat "supportFiles/_template/isolinux.cfg" | envsubst '${ISOLINUX_TITLE}' | tee "supportFiles/$DEB_LIVE_BUILD_NAME/isolinux.cfg" > /dev/null
 cat "supportFiles/_template/ddd" | envsubst '${DDD_TITLE},${DDD_SUBTITLE},${DDD_IMAGE_FILE_NAME}'  | tee "supportFiles/$DEB_LIVE_BUILD_NAME/ddd" > /dev/null
 cat "supportFiles/_template/build.sh" | envsubst '${DEB_LIVE_BUILD_NAME}'  | tee "supportFiles/$DEB_LIVE_BUILD_NAME/build.sh" > /dev/null
+chmod +x /supportFiles/$DEB_LIVE_BUILD_NAME/build.sh
 docker run --privileged --rm \
   -v $(pwd)/output:/output \
   -v $(pwd)/supportFiles:/supportFiles:ro \
