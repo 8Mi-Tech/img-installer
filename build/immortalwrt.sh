@@ -50,10 +50,10 @@ cat "supportFiles/_template/grub.cfg" | envsubst '${GRUB_TITLE}' | tee "supportF
 cat "supportFiles/_template/isolinux.cfg" | envsubst '${ISOLINUX_TITLE}' | tee "supportFiles/$DEB_LIVE_BUILD_NAME/isolinux.cfg" > /dev/null
 cat "supportFiles/_template/ddd" | envsubst '${DDD_TITLE},${DDD_SUBTITLE},${DDD_IMAGE_FILE_NAME}'  | tee "supportFiles/$DEB_LIVE_BUILD_NAME/ddd" > /dev/null
 cat "supportFiles/_template/build.sh" | envsubst '${DEB_LIVE_BUILD_NAME}'  | tee "supportFiles/$DEB_LIVE_BUILD_NAME/build.sh" > /dev/null
-chmod +x /supportFiles/$DEB_LIVE_BUILD_NAME/build.sh
+chmod +x supportFiles/$DEB_LIVE_BUILD_NAME/build.sh
 docker run --privileged --rm \
   -v $(pwd)/output:/output \
   -v $(pwd)/supportFiles:/supportFiles:ro \
   -v $(pwd)/_output/$DDD_IMAGE_FILE_NAME:/mnt/$DDD_IMAGE_FILE_NAME \
   debian:buster \
-  /supportFiles/$DEB_LIVE_BUILD_NAME/build.sh
+  supportFiles/$DEB_LIVE_BUILD_NAME/build.sh
